@@ -71,7 +71,8 @@ def smart_truncate(string, max_length=0, word_boundaries=False, separator=' ', s
 
 
 def slugify(text, entities=True, decimal=True, hexadecimal=True, max_length=0, word_boundary=False,
-            separator=DEFAULT_SEPARATOR, save_order=False, stopwords=(), regex_pattern=None):
+            separator=DEFAULT_SEPARATOR, save_order=False, stopwords=(),
+            allowed_chars=ALLOWED_CHARS, regex_pattern=None):
     """
     Make a slug from the given text.
     :param text (str): initial text
@@ -83,6 +84,7 @@ def slugify(text, entities=True, decimal=True, hexadecimal=True, max_length=0, w
     :param save_order (bool): if parameter is True and max_length > 0 return whole words in the initial order
     :param separator (str): separator between words
     :param stopwords (iterable): words to discount
+    :param allowed_chars (str): string of allowed characters
     :param regex_pattern (str): regex pattern for allowed characters
     :return (str):
     """
@@ -134,7 +136,7 @@ def slugify(text, entities=True, decimal=True, hexadecimal=True, max_length=0, w
     text = NUMBERS_PATTERN.sub('', text)
 
     # replace all other unwanted characters
-    pattern = regex_pattern or re.compile(r'[^{}{}]+'.format(separator, ALLOWED_CHARS))
+    pattern = regex_pattern or re.compile(r'[^{}{}]+'.format(separator, allowed_chars))
     text = re.sub(pattern, separator, text)
 
     # collapse multiple separators
